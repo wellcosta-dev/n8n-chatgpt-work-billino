@@ -1,0 +1,232 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "path": "billingo-chatgpt-work"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        -816,
+        512
+      ],
+      "id": "f953b32a-f749-4845-8376-139b87643e53",
+      "name": "Billingo MCP Server",
+      "webhookId": "billingo-chatgpt-work"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Olvasási művelet a Billingo v3 API-n. Használd dokumentumok, partnerek, termékek, bankszámlák, számlatömbök, fizetések, szervezeti adatok és más GET végpontok lekérésére.",
+        "url": "=https://api.billingo.hu/v3/{{ $fromAI('endpoint', 'A Billingo v3 endpoint a /v3/ utáni része. Példák: documents, documents/123, partners, products?page=1. Ne adj meg teljes URL-t és ne kezdd / jellel.', 'string') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "CHANGE-ME"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        -1344,
+        752
+      ],
+      "id": "b31dbf79-d2ba-4e8e-8daf-ebf17e34335c",
+      "name": "Billingo READ (GET)"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Írási vagy műveleti Billingo v3 API hívás. Használd erőforrások létrehozására és POST actionökre, például partner, termék vagy dokumentum létrehozására, fizetés rögzítésére, sztornózásra, küldésre vagy proforma átalakításra. Pénzügyi vagy visszafordíthatatlan művelet előtt kérj egyértelmű felhasználói jóváhagyást.",
+        "method": "POST",
+        "url": "=https://api.billingo.hu/v3/{{ $fromAI('endpoint', 'A Billingo v3 endpoint a /v3/ utáni része. Példák: documents, documents/123, partners, products?page=1. Ne adj meg teljes URL-t és ne kezdd / jellel.', 'string') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "CHANGE-ME"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($fromAI('body', 'A Billingo API-nak küldendő JSON request body. Csak az adott Billingo v3 végpont által elfogadott mezőket add meg.', 'json', {})) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        -1024,
+        752
+      ],
+      "id": "cfb49b8f-cccc-4946-b524-182890a4c0df",
+      "name": "Billingo CREATE/ACTION (POST)"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Meglévő Billingo erőforrás módosítása PUT végponton. Használd partner, termék, bankszámla, számlatömb vagy más módosítható erőforrás frissítésére. Végrehajtás előtt ellenőrizd az azonosítót és a módosítandó mezőket.",
+        "method": "PUT",
+        "url": "=https://api.billingo.hu/v3/{{ $fromAI('endpoint', 'A Billingo v3 endpoint a /v3/ utáni része. Példák: documents, documents/123, partners, products?page=1. Ne adj meg teljes URL-t és ne kezdd / jellel.', 'string') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "CHANGE-ME"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($fromAI('body', 'A Billingo API-nak küldendő JSON request body. Csak az adott Billingo v3 végpont által elfogadott mezőket add meg.', 'json', {})) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        -704,
+        752
+      ],
+      "id": "ec45ecd3-0de4-4411-8914-c59d563e5dd1",
+      "name": "Billingo UPDATE (PUT)"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Részleges módosítás a Billingo v3 API-n, kizárólag akkor, ha az adott hivatalos Billingo végpont PATCH metódust támogat. Végrehajtás előtt ellenőrizd az erőforrást és a módosítandó mezőket.",
+        "method": "PATCH",
+        "url": "=https://api.billingo.hu/v3/{{ $fromAI('endpoint', 'A Billingo v3 endpoint a /v3/ utáni része. Példák: documents, documents/123, partners, products?page=1. Ne adj meg teljes URL-t és ne kezdd / jellel.', 'string') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "CHANGE-ME"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($fromAI('body', 'A Billingo API-nak küldendő JSON request body. Csak az adott Billingo v3 végpont által elfogadott mezőket add meg.', 'json', {})) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        -384,
+        752
+      ],
+      "id": "e63966c2-1ee8-48c9-9c62-22b68bd3b157",
+      "name": "Billingo UPDATE (PATCH)"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Törlési művelet a Billingo v3 API-n. Csak olyan végponton használd, amely támogatja a DELETE metódust. Törlés vagy más visszafordíthatatlan művelet előtt mindig kérj egyértelmű felhasználói jóváhagyást.",
+        "method": "DELETE",
+        "url": "=https://api.billingo.hu/v3/{{ $fromAI('endpoint', 'A Billingo v3 endpoint a /v3/ utáni része. Példák: documents, documents/123, partners, products?page=1. Ne adj meg teljes URL-t és ne kezdd / jellel.', 'string') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "CHANGE-ME"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        -64,
+        752
+      ],
+      "id": "a727bad7-2f80-47a2-9986-ef3744945d76",
+      "name": "Billingo DELETE"
+    }
+  ],
+  "connections": {
+    "Billingo READ (GET)": {
+      "ai_tool": [
+        [
+          {
+            "node": "Billingo MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Billingo CREATE/ACTION (POST)": {
+      "ai_tool": [
+        [
+          {
+            "node": "Billingo MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Billingo UPDATE (PUT)": {
+      "ai_tool": [
+        [
+          {
+            "node": "Billingo MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Billingo UPDATE (PATCH)": {
+      "ai_tool": [
+        [
+          {
+            "node": "Billingo MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Billingo DELETE": {
+      "ai_tool": [
+        [
+          {
+            "node": "Billingo MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "5eef05fa5b3cc4835ea42f485e53d3b749dfbd4e0e91ba31f9670104cc9cbbcb"
+  }
+}
